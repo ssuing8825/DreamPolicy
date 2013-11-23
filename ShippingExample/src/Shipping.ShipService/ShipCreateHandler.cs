@@ -22,7 +22,9 @@ namespace Shipping.ShipService
             //Get the Aggregate
             //Call the method on it
             // Save the aggregate. THe save must save the uncommitted events.
+            Logger.Debug("Creating  the aggregate");
             var agg = new Ship(message.ShipId, message.Name, message.Port);
+            Logger.Debug("Calling Save on the aggregate");
             repository.Save(agg, message.MessageId, h => h["OriginalMessageHeader"] = message);
         }
     }

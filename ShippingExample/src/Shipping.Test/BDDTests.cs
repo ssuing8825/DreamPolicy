@@ -8,13 +8,23 @@ using CommonDomain.Core;
 using NEventStore;
 using NEventStore.Serialization;
 using NEventStore.Dispatcher;
+using NEventStore.Logging;
+
 
 namespace Shipping.Test
 {
     [TestClass]
-    public class UnitTest1
+    public class BDDTests
     {
+        private static readonly ILog Logger = new ConsoleWindowLogger(typeof(BDDTests));
 
+
+        [TestMethod]
+        public void TestLog()
+        {
+          Logger.Debug("Test");
+
+        }
         [TestMethod]
         public void TestMethod1()
         {
@@ -41,25 +51,28 @@ namespace Shipping.Test
             IStoreEvents store = WireupEventStore();
             IEventStream stream = store.OpenStream(i);
 
-            Console.WriteLine("*****     Opening Stream and writing event values     *****");
+            Logger.Debug("*****     Opening Stream and writing event values     *****");
             int eventNumber = 1;
 
             foreach (var e in stream.CommittedEvents)
             {
-                Console.WriteLine("Event number: {0} , {1}", eventNumber, ((IDomainEvent)e.Body).Value);
+                Logger.Debug("Event number: {0} , {1}", eventNumber, ((IDomainEvent)e.Body).Value);
                 eventNumber++;
             }
 
-            Console.WriteLine("*****     Getting out the aggregates    *****");
+            Logger.Debug("*****     Retrieving the aggregates at different points   *****");
+
+            Logger.Debug("*****     Loading the current version   *****");
             //Load the first version
             var repository = new EventStoreRepository(WireupEventStore(), new AggregateFactory(), new ConflictDetector());
             var agg = repository.GetById<Ship>(i);
-            Console.WriteLine("This is the current location of the ship '{0}'", agg.Location);
+            Logger.Debug("This is the last location of the ship '{0}'", agg.Location);
 
             ////Load the second version. 
+            Logger.Debug("*****     Loading version 1   *****");
             repository = new EventStoreRepository(WireupEventStore(), new AggregateFactory(), new ConflictDetector());
             agg = repository.GetById<Ship>(i, 1);
-            Console.WriteLine("This is the first location of the ship '{0}'", agg.Location);
+            Logger.Debug("This is the first location of the ship '{0}'", agg.Location);
 
 
         }

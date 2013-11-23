@@ -11,6 +11,7 @@ using NEventStore.Dispatcher;
 using NEventStore.Serialization;
 using CommonDomain.Persistence.EventStore;
 using CommonDomain.Core;
+using NEventStore.Logging;
 
 
 namespace Shipping.ShipService
@@ -18,6 +19,10 @@ namespace Shipping.ShipService
     public class ShipHandlerBase
     {
         protected EventStoreRepository repository;
+        
+        //This should not be hard coded like this.
+        protected static readonly ILog Logger = new ConsoleWindowLogger(typeof(ShipHandlerBase));
+
 
         private static readonly byte[] EncryptionKey = new byte[]
             {
@@ -50,11 +55,11 @@ namespace Shipping.ShipService
             try
             {
                 foreach (var @event in commit.Events)
-                    Console.WriteLine("Message Dispatched " + ((IDomainEvent)@event.Body).Value);
+                    Logger.Debug("Message Dispatched " + ((IDomainEvent)@event.Body).Value);
             }
             catch (Exception)
             {
-                Console.WriteLine("Message Not Dispatched");
+                Logger.Debug("Message Not Dispatched");
             }
         }
 
