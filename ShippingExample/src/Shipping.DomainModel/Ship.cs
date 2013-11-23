@@ -30,24 +30,29 @@ namespace Shipping.DomainModel
 
         public string Location { get; set; }
 
-        private void Apply(ShipCreatedEvent @event)
+        public void Arrive(string location)
         {
-            this.Name = @event.Name;
-            this.Location = @event.Location;
-        }
-
-        public void Arrive(string Location, DateTime arriveTime)
-        {
-
+            this.RaiseEvent(new ShipArrivedEvent { Id = this.Id, Location = location });
         }
         public void Depart()
         {
             this.RaiseEvent(new ShipDepartedEvent { Id = this.Id });
         }
+  
+        private void Apply(ShipCreatedEvent @event)
+        {
+            this.Name = @event.Name;
+            this.Location = @event.Location;
+        }
         private void Apply(ShipDepartedEvent @event)
         {
             this.Location = "Out to Sea";
         }
+        private void Apply(ShipArrivedEvent @event)
+        {
+            this.Location = @event.Location;
+        }
+
 
     }
 }

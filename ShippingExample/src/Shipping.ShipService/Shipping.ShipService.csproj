@@ -49,9 +49,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ShipArriveHandler.cs" />
     <Compile Include="ShipDepartHandler .cs" />
     <Compile Include="ShipCreateHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ShipHandlerBase.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config">

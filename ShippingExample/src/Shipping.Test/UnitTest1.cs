@@ -28,10 +28,14 @@ namespace Shipping.Test
             var i = Guid.NewGuid();
 
             var t = new ShipCreateHandler();
-            t.HandleCreateShipCommand(new ShipCreateCommand() { MessageId = Guid.NewGuid(), ShipId = i, Name = "Titantic", Port = "Cleveland" });
+            t.HandleShipCommand(new ShipCreateCommand() { MessageId = Guid.NewGuid(), ShipId = i, Name = "Titantic", Port = "Southampton" });
 
             var d = new ShipDepartHandler();
-            d.HandleShipDepartCommand(new ShipDepartCommand() { MessageId = Guid.NewGuid(), ShipId = i });
+            d.HandleShipCommand(new ShipDepartCommand() { MessageId = Guid.NewGuid(), ShipId = i });
+
+            var q = new ShipArriveHandler();
+            q.HandleShipCommand(new ShipArriveCommand() { MessageId = Guid.NewGuid(), ShipId = i, Port = "New York" });
+
 
             //Get out the ship and see where it's been
             IStoreEvents store = WireupEventStore();
@@ -50,11 +54,11 @@ namespace Shipping.Test
             //Load the first version
             var repository = new EventStoreRepository(WireupEventStore(), new AggregateFactory(), new ConflictDetector());
             var agg = repository.GetById<Ship>(i);
-            Console.WriteLine("This is the current location of the ship '{0}'" , agg.Location);
+            Console.WriteLine("This is the current location of the ship '{0}'", agg.Location);
 
             ////Load the second version. 
             repository = new EventStoreRepository(WireupEventStore(), new AggregateFactory(), new ConflictDetector());
-            agg = repository.GetById<Ship>(i,1);
+            agg = repository.GetById<Ship>(i, 1);
             Console.WriteLine("This is the first location of the ship '{0}'", agg.Location);
 
 
