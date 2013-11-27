@@ -1,5 +1,6 @@
 ﻿using CommonDomain;
 using CommonDomain.Persistence;
+using Shipping.Gateway;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,9 @@ namespace Shipping.DomainModel
 
 
             ConstructorInfo constructor = type.GetConstructor(
-                BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(Guid) }, null);
+                BindingFlags.NonPublic | BindingFlags.Instance, null, new[] { typeof(Guid), typeof(WeightTaxProxy) }, null);
 
-            return constructor.Invoke(new object[] { id }) as IAggregate;
+            return constructor.Invoke(new object[] { id, new WeightTaxProxy() }) as IAggregate;
         }
     }
 }

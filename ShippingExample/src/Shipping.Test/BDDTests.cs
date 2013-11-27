@@ -9,6 +9,7 @@ using NEventStore;
 using NEventStore.Serialization;
 using NEventStore.Dispatcher;
 using NEventStore.Logging;
+using Shipping.Gateway;
 
 
 namespace Shipping.Test
@@ -28,16 +29,16 @@ namespace Shipping.Test
         [TestMethod]
         public void TestMethod1()
         {
-            var s = new Ship(Guid.NewGuid(), "Titantic", "Cleveland");
+            var s = new Ship(Guid.NewGuid(), new WeightTaxProxy(), "Titantic", "Cleveland");
             Assert.AreEqual(s.Name, "Titantic");
         }
 
         [TestMethod]
-        public void TestMethod2()
+        public void MainBDDTest()
         {
             var i = Guid.NewGuid();
 
-            var t = new ShipCreateHandler();
+            var t = new ShipCreateHandler(new WeightTaxProxy());
             t.HandleShipCommand(new ShipCreateCommand() { MessageId = Guid.NewGuid(), ShipId = i, Name = "Titantic", Port = "Southampton" });
 
             var d = new ShipDepartHandler();

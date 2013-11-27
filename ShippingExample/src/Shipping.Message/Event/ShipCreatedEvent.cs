@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shipping.Gateway;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,8 @@ namespace Shipping.Message
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+
+        public WeightTax TaxResponse { get; set; }
 
         public string Value
         {

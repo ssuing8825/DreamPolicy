@@ -80,6 +80,10 @@
       <Project>{c63b53dc-c7cd-4015-9a6e-0a0feab4349d}</Project>
       <Name>Shipping.DomainModel</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Shipping.Gateway\Shipping.Gateway.csproj">
+      <Project>{3bcbc7ea-4bcd-47a2-9b49-64809df130d8}</Project>
+      <Name>Shipping.Gateway</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Shipping.Message\Shipping.Message.csproj">
       <Project>{23a123a7-2661-4ff4-b4d2-99e71c93b333}</Project>
       <Name>Shipping.Message</Name>
